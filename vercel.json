@@ -9,11 +9,11 @@
       "dest": "/static/$1"
     },
     {
-      "src": "^/(.+\\.(jpg|jpeg|png|PNG|gif|webp|svg|ico))$",
+      "src": "^/(.+\\.(jpg|jpeg|png|gif|webp|svg|ico))$",
       "dest": "/$1"
     },
     {
-      "src": "^/images/(.+\\.(jpg|jpeg|png|PNG|gif|webp|svg))$",
+      "src": "^/images/(.+\\.(jpg|jpeg|png|gif|webp|svg))$",
       "dest": "/images/$1"
     },
     {
