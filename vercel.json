@@ -1,8 +1,8 @@
 {
   "name": "trustudsel-website",
   "version": 2,
-  "buildCommand": "cd trustudsel-website && npm install && npm run build",
-  "outputDirectory": "trustudsel-website/build",
+  "buildCommand": "npm install && npm run build",
+  "outputDirectory": "build",
   "routes": [
     {
       "src": "/static/(.*)",
