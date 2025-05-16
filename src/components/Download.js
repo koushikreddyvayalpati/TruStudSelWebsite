@@ -38,7 +38,7 @@ const IPhoneFrame = ({ imageUrl, initialAnimation, delay, isReducedPerformance }
   );
 };
 
-const AppStoreButton = ({ icon, store, label, isPrimary, isReducedPerformance }) => {
+const AppStoreButton = ({ icon, store, label, isPrimary, isReducedPerformance, href }) => {
   const animationProps = isReducedPerformance ? {
     whileHover: {},
     whileTap: {}
@@ -49,7 +49,9 @@ const AppStoreButton = ({ icon, store, label, isPrimary, isReducedPerformance })
 
   return (
     <motion.a 
-      href="#" 
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
       className={`download-btn ${isPrimary ? 'primary' : ''} btn-hover-effect`}
       {...animationProps}
     >
@@ -146,6 +148,7 @@ const Download = () => {
               label="GET IT ON"
               isPrimary={true}
               isReducedPerformance={isReducedPerformance}
+              href="https://play.google.com/store/apps/details?id=com.trustudsel"
             />
             
             <AppStoreButton 
@@ -154,6 +157,7 @@ const Download = () => {
               label="Download on the"
               isPrimary={false}
               isReducedPerformance={isReducedPerformance}
+              href="https://apps.apple.com/us/app/trustudsel/id6745458944"
             />
           </motion.div>
           
