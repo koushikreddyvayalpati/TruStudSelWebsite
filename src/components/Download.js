@@ -465,18 +465,43 @@ const Download = () => {
           .app-screens {
             flex-direction: column;
             align-items: center;
+            gap: 40px;
+            padding: 20px 0;
           }
           
           .screen {
-            width: 180px;
-            height: 370px;
-            margin-bottom: 30px;
+            width: 220px;
+            height: 440px;
+            margin: 0 auto 20px;
+          }
+
+          /* Center download buttons on mobile */
+          .download-buttons {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
           }
           
+          /* Improved QR code container for mobile */
           .qr-codes-container {
             flex-direction: column;
             align-items: center;
-            gap: 20px;
+            gap: 30px;
+          }
+
+          /* Make section padding responsive */
+          .download {
+            padding-top: 60px;
+            padding-bottom: 60px;
+          }
+        }
+        
+        /* For very small screens */
+        @media (max-width: 375px) {
+          .screen {
+            width: 180px;
+            height: 370px;
           }
         }
         
