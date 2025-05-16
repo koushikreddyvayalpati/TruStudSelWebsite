@@ -127,7 +127,7 @@ a {
   }
 }
 
-/* Optimize for dark mode */
+/* Disable dark mode adaptation - using standard colors regardless of system preference
 @media (prefers-color-scheme: dark) {
   :root {
     --bg-light: #1a1a1a;
@@ -136,6 +136,17 @@ a {
     --text-dark: #ffffff;
     --text-light: #f5f5f5;
   }
+}
+*/
+
+/* Force light mode colors regardless of system preference */
+:root {
+  --primary-color: #f7b305;
+  --text-dark: #000000;
+  --text-light: #ffffff;
+  --bg-light: #ffffff;
+  --bg-gray: #f5f5f5;
+  --bg-dark: #1a1a1a;
 }
 
 @media (max-width: 768px) {
