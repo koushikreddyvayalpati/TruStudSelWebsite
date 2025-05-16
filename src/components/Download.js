@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect, useState } from 'react';
 import { FaGooglePlay, FaApple, FaMobile, FaQrcode } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import usePerformanceOptimization from '../hooks/usePerformanceOptimization';
@@ -14,7 +14,7 @@ const IPhoneFrame = ({ imageUrl, initialAnimation, delay, isReducedPerformance }
     whileHover: { y: -10, boxShadow: "0 30px 50px rgba(0, 0, 0, 0.3)" },
     initial: initialAnimation,
     whileInView: { x: 0, y: 0, opacity: 1 },
-    viewport: { once: true },
+    viewport: { once: true, margin: "-100px" },
     transition: { duration: 0.5, delay }
   };
 
@@ -65,6 +65,7 @@ const AppStoreButton = ({ icon, store, label, isPrimary, isReducedPerformance, h
 };
 
 const Download = () => {
+  const [isMobile, setIsMobile] = useState(false);
   const { 
     isReducedMotion, 
     isSlowConnection, 
@@ -72,32 +73,40 @@ const Download = () => {
     shouldEnableAnimations
   } = usePerformanceOptimization();
   
+  // Check for mobile device on component mount
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+  
   // Flag to determine if we should reduce animations
-  const isReducedPerformance = isReducedMotion || isSlowConnection || isLowEndDevice;
+  // Force reduced performance on mobile
+  const isReducedPerformance = isReducedMotion || isSlowConnection || isLowEndDevice || isMobile;
   
   // Memo to avoid recreation on every render
   const phoneScreens = useMemo(() => [
     { 
       imageUrl: "/phone2.png", 
       initialAnimation: { x: -50, opacity: 0 }, 
-      delay: isReducedPerformance ? 0.2 : 0.5 
+      delay: 0.2 
     },
     { 
       imageUrl: "/phone3.png", 
       initialAnimation: { y: 50, opacity: 0 }, 
-      delay: isReducedPerformance ? 0.3 : 0.6 
+      delay: 0.3 
     },
     { 
       imageUrl: "/phone4.png", 
       initialAnimation: { x: 50, opacity: 0 }, 
-      delay: isReducedPerformance ? 0.4 : 0.7 
+      delay: 0.4 
     }
-  ], [isReducedPerformance]);
-
-  // Helper function for animation configs
-  const getAnimationConfig = (fullAnimation, reducedAnimation) => {
-    return isReducedPerformance ? reducedAnimation : fullAnimation;
-  };
+  ], []);
 
   return (
     <section className="download section">
@@ -113,7 +122,7 @@ const Download = () => {
             initial={{ opacity: 0, y: isReducedPerformance ? 0 : 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: isReducedPerformance ? 0.3 : 0.5 }}
+            transition={{ duration: 0.3 }}
           >
             Get TruStudSel Today
           </motion.h2>
@@ -123,10 +132,7 @@ const Download = () => {
             initial={{ opacity: 0, y: isReducedPerformance ? 0 : 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
-            transition={{ 
-              duration: isReducedPerformance ? 0.3 : 0.5, 
-              delay: isReducedPerformance ? 0 : 0.1 
-            }}
+            transition={{ duration: 0.3 }}
           >
             Download our app now and start buying and selling on your campus. 
             Join thousands of students already using TruStudSel!
@@ -137,10 +143,7 @@ const Download = () => {
             initial={{ opacity: 0, y: isReducedPerformance ? 0 : 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
-            transition={{ 
-              duration: isReducedPerformance ? 0.3 : 0.5, 
-              delay: isReducedPerformance ? 0 : 0.2 
-            }}
+            transition={{ duration: 0.3 }}
           >
             <AppStoreButton 
               icon={<FaGooglePlay className="store-icon" />}
@@ -166,20 +169,14 @@ const Download = () => {
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true, amount: 0.2 }}
-            transition={{ 
-              duration: isReducedPerformance ? 0.3 : 0.7, 
-              delay: isReducedPerformance ? 0 : 0.3 
-            }}
+            transition={{ duration: 0.3 }}
           >
             <motion.div 
               className="app-screens"
               initial={{ opacity: 0, y: isReducedPerformance ? 0 : 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.1 }}
-              transition={{ 
-                duration: isReducedPerformance ? 0.3 : 0.7, 
-                delay: isReducedPerformance ? 0 : 0.4 
-              }}
+              transition={{ duration: 0.3 }}
             >
               {phoneScreens.map((screen, index) => (
                 <IPhoneFrame 
@@ -198,10 +195,7 @@ const Download = () => {
             initial={{ opacity: 0, y: isReducedPerformance ? 0 : 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.1 }}
-            transition={{ 
-              duration: isReducedPerformance ? 0.3 : 0.5, 
-              delay: isReducedPerformance ? 0 : 0.8 
-            }}
+            transition={{ duration: 0.3 }}
           >
             <p>Scan QR code to download</p>
             <div className="qr-codes-container">
@@ -276,7 +270,7 @@ const Download = () => {
           opacity: 0.5;
           filter: blur(60px);
           background-color: rgba(247, 179, 5, 0.15);
-          animation-duration: ${isReducedPerformance ? '30s' : '15s'};
+          animation-duration: ${isReducedPerformance ? '60s' : '15s'};
         }
         
         .blob-1 {
@@ -460,9 +454,11 @@ const Download = () => {
         @media (max-width: 768px) {
           .download-phones {
             max-width: 100%;
+            overflow-x: hidden;
           }
           
           .app-screens {
+            display: flex;
             flex-direction: column;
             align-items: center;
             gap: 40px;
@@ -472,7 +468,8 @@ const Download = () => {
           .screen {
             width: 220px;
             height: 440px;
-            margin: 0 auto 20px;
+            margin: 0 auto;
+            transform: none !important;
           }
 
           /* Center download buttons on mobile */
@@ -481,6 +478,11 @@ const Download = () => {
             flex-direction: column;
             align-items: center;
             gap: 15px;
+            width: 100%;
+          }
+
+          .download-buttons .download-btn {
+            min-width: 220px;
           }
           
           /* Improved QR code container for mobile */
@@ -503,11 +505,19 @@ const Download = () => {
             width: 180px;
             height: 370px;
           }
+          
+          .download-phones {
+            margin: 40px auto;
+          }
         }
         
         @media (prefers-reduced-motion: reduce) {
           .blob {
             animation: none !important;
+          }
+          
+          .app-screens {
+            transform: none !important;
           }
         }
       `}</style>
